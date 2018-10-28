@@ -30,3 +30,12 @@ app.get('/', function (req, res) {
 });
 
 var server = app.listen(3000);
+
+// react同构代码的流程
+//
+// 服务器端运行React、代码渲染出html页面
+// 发送html给浏览器
+// 浏览器接收内容展示
+// 浏览器加载js文件
+// js中的react代码在浏览器端重新执行
+// js中的react代码接管页面的操作
