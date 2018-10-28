@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import Header from '../../components/Header'
 
 const Login = () => {
     return (
         <div>
+            <Header/>
             <div>Login</div>
         </div>
     )
