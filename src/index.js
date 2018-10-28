@@ -1,4 +1,4 @@
-
+//将打包好的react代码放入public文件夹，之后通过中间app.use()方法引入js脚本，完成同构
 import express from 'express';
 import Home from './containers/Home';
 import React from 'react'
@@ -22,9 +22,7 @@ app.get('/', function (req, res) {
                 <title>ssr</title>
             </head>
             <body>
-                <div id="root">
-                    ${content}
-                </div>
+                <div id="root">${content}</div>
             </body>
             <script src="./index.js"></script>
         </html>
