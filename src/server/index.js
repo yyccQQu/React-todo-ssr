@@ -1,8 +1,9 @@
 //将打包好的react代码放入public文件夹，之后通过中间app.use()方法引入js脚本，完成同构
 import express from 'express';
-import Home from './containers/Home';
 import React from 'react'
 import { renderToString } from 'react-dom/server';
+import {StaticRouter} from 'react-router-dom';
+import Routes from '../Routes';
 
 // 客户端渲染
 // React代码在浏览器上执行，消耗的是用户浏览器的性能
@@ -13,9 +14,16 @@ import { renderToString } from 'react-dom/server';
 const app = express();
 app.use(express.static('public'))//静态文件直接到根目录下public、文件夹中去找
 
-const content = renderToString(<Home />);
+
 
 app.get('/', function (req, res) {
+
+    const content = renderToString((
+        <StaticRouter location={req.path} context={{}}>
+            {Routes}
+        </StaticRouter>
+    ));
+
     res.send(`
         <html>
             <head>
