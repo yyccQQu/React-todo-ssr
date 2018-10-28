@@ -11,6 +11,8 @@ import { renderToString } from 'react-dom/server';
 // React代码在服务器上执行，消耗的是服务器端的性能
 
 const app = express();
+app.use(express.static('public'))//静态文件直接到根目录下public、文件夹中去找
+
 const content = renderToString(<Home />);
 
 app.get('/', function (req, res) {
@@ -22,6 +24,7 @@ app.get('/', function (req, res) {
             <body>
                 ${content}
             </body>
+            <script src="./index.js"></script>
         </html>
         `);
 });
