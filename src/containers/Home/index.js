@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 const Home = () => {
     return (
         <div>
-            <div>Home abc~~lidehaor</div>
+            <div>Home abc~~lidehaor!!!!!</div>
             <button onClick={() => { alert('click') }}>click</button>
         </div>
     )
