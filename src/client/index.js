@@ -4,13 +4,13 @@ import Routes from '../Routes';
 import { BrowserRouter } from 'react-router-dom';
 import { createStore,applyMiddleware } from 'redux';
 import {Provider } from 'react-redux';
-import thunk from 'react-thunk'
+import thunk from 'redux-thunk'
 
 
 const reducer = (state ={name: 'golang'}, action)=>{
     return state
 }
-const store = createStore(reducer)
+const store = createStore(reducer, applyMiddleware(thunk))
 
 const App = () => {
     return (
