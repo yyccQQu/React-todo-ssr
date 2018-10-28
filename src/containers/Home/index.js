@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 
 const Home = () => {
     return (
-        <div>Home</div>
+        <div>Home abc!</div>
     )
 
 }
-
 
 export default Home;
