@@ -10,6 +10,11 @@ class Home extends Component {
             <div>
                 <Header/>
                 <div>Home abc~~{this.props.name}!</div>
+                {
+                    this.props.list.map((item,index) => {
+                        return <div key={index}>{item}</div>
+                    })
+                }
                 <button onClick={() => { alert('click') }}>click</button>
             </div>
         )
@@ -32,7 +37,8 @@ class Home extends Component {
 // }
 
 const mapStateToProps = state => ({
-    name: state.home.name
+    name: state.home.name,
+    list: state.home.newsList
 })
 
 const mapDispatchToProps = dispatch => ({

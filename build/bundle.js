@@ -22,7 +22,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "3b81c9f21b1fcc8b6b1d";
+/******/ 	var hotCurrentHash = "321c26bcfe376b39a4d9";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -896,6 +896,13 @@ var Home = function (_Component) {
                     this.props.name,
                     '!'
                 ),
+                this.props.list.map(function (item, index) {
+                    return _react2.default.createElement(
+                        'div',
+                        { key: index },
+                        item
+                    );
+                }),
                 _react2.default.createElement(
                     'button',
                     { onClick: function onClick() {
@@ -927,7 +934,8 @@ var Home = function (_Component) {
 
 var mapStateToProps = function mapStateToProps(state) {
     return {
-        name: state.home.name
+        name: state.home.name,
+        list: state.home.newsList
     };
 };
 
@@ -962,7 +970,16 @@ var _axios = __webpack_require__(/*! axios */ "axios");
 
 var _axios2 = _interopRequireDefault(_axios);
 
+var _contants = __webpack_require__(/*! ./contants */ "./src/containers/Home/store/contants.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var changeList = function changeList(list) {
+    return {
+        type: _contants.CHANGE_LIST,
+        list: list
+    };
+};
 
 var getHomeList = exports.getHomeList = function getHomeList() {
     return function (dispatch) {
@@ -971,12 +988,29 @@ var getHomeList = exports.getHomeList = function getHomeList() {
         _axios2.default.get('/api/v2/movie/in_theaters').then(function (res) {
             var data = res.config.url.split('/').splice(1, 4);
             console.log(data, 'res');
-            // dispatch(changeList(data))
+            dispatch(changeList(data));
         }).catch(function (err) {
             console.log(err, 'error');
         });
     };
 };
+
+/***/ }),
+
+/***/ "./src/containers/Home/store/contants.js":
+/*!***********************************************!*\
+  !*** ./src/containers/Home/store/contants.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var CHANGE_LIST = exports.CHANGE_LIST = "HOME/CHANGE_LIST";
 
 /***/ }),
 
@@ -1019,6 +1053,10 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _contants = __webpack_require__(/*! ./contants */ "./src/containers/Home/store/contants.js");
+
 var defaultState = {
     newsList: [],
     name: "golang"
@@ -1029,6 +1067,11 @@ exports.default = function () {
     var action = arguments[1];
 
     switch (action.type) {
+        case _contants.CHANGE_LIST:
+            return _extends({}, state, {
+                newsList: action.list
+            });
+
         default:
             return state;
     }
