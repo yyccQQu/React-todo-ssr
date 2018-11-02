@@ -5,15 +5,19 @@ import {connect} from 'react-redux'
 import {getHomeList} from './store/action'
 
 class Home extends Component {
+
+    getList() {
+        const {list} = this.props;
+        return list.map((item,index) => <div key={index}>{item}</div>)
+    }
+
     render() {
         return(
             <div>
                 <Header/>
                 <div>Home abc~~{this.props.name}!</div>
                 {
-                    this.props.list.map((item,index) => {
-                        return <div key={index}>{item}</div>
-                    })
+                    this.getList()
                 }
                 <button onClick={() => { alert('click') }}>click</button>
             </div>
