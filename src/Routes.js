@@ -9,7 +9,13 @@ export default[
         component: Home,
         exact: true,
         loadData: Home.loadData,
-        key: 'Home'
+        key: 'Home',
+        routes: [{
+            path: '/ttt',
+            component: Login,
+            exact: true,
+            key: 'ttt'
+        }]
     },{
         path: '/login',
         component: Login,

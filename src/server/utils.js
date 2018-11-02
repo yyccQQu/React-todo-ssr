@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import {StaticRouter,Route,matchPath } from 'react-router-dom';
+import {StaticRouter,Route } from 'react-router-dom';
+import { matchRoutes } from 'react-router-config'
 import routes from '../Routes';
 import {Provider } from 'react-redux';
 import getStore from '../store'
@@ -13,20 +14,36 @@ export const render = (req) => {
     //如果用户访问login路径，我们就拿login组件的异步数据
     //根据路由的路径，来往store里面加数据
 
-    const matchRoutes = [];
+    const matchedRoutes = matchRoutes(routes, req.path)
 
-    routes.some(route => {
-    // 根据路由的路径，来往store里面加数据
-        const match = matchPath(req.path, route);
-        if (match) {
-            matchRoutes.push(route);
-        }
+     // 根据路由的路径，来往store里面加数据
+        // routes.some(route => { 只加载简单路由
+        //     const match = matchPath(req.path, route);
+        //     if (match) {
+        //         matchRoutes.push(route);
+        //     }
+        // });
 
-    });
 
     //让 matchRoutes里面所有的组件，对应的loadData方法执行一次
+    const promises = [];
+    matchedRoutes.forEach(item => {
+        if(item.route.loadData){
+            //将store当做参数传进loadData函数，在对应web页面执行对应方法，
+            promises.push(item.route.loadData(store))
+        }
 
-    console.log(matchRoutes)
+        console.log(item.route.loadData(store))
+    })
+
+    //当所有异步操作执行完成之后再执行后面的操作
+    Promise.all(promises).then(() =>{
+        console.log(store.getState())
+    })
+    
+    
+
+    console.log(store.getState())
 
 
     const content = renderToString((
