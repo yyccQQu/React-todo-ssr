@@ -1,17 +1,42 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import {StaticRouter} from 'react-router-dom';
-import Routes from '../Routes';
+import {StaticRouter,Route,matchPath } from 'react-router-dom';
+import routes from '../Routes';
 import {Provider } from 'react-redux';
 import getStore from '../store'
 
 export const render = (req) => {
-    
+    const store = getStore();
+    //如果在这里，我们能够拿到异步数据，并填充到store之中
+    //store里面到底填充什么，我们不知道，我们需要结合当前用户请求地址，和路由，去判断
+    //如果用户访问 / 路径，我们就那home组件的异步数据
+    //如果用户访问login路径，我们就拿login组件的异步数据
+    //根据路由的路径，来往store里面加数据
+
+    const matchRoutes = [];
+
+    routes.some(route => {
+    // 根据路由的路径，来往store里面加数据
+        const match = matchPath(req.path, route);
+        if (match) {
+            matchRoutes.push(route);
+        }
+
+    });
+
+    //让 matchRoutes里面所有的组件，对应的loadData方法执行一次
+
+    console.log(matchRoutes)
+
 
     const content = renderToString((
-        <Provider store={getStore()}>
+        <Provider store={store}>
             <StaticRouter location={req.path} context={{}}>
-                {Routes}
+                <div>
+                    {routes.map(route =>(
+                        <Route {...route}/>
+                    ))}
+                </div>
             </StaticRouter>
         </Provider>
         

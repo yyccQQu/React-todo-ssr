@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import Routes from '../Routes';
-import { BrowserRouter } from 'react-router-dom';
+import routes from '../Routes';
+import { BrowserRouter,Route } from 'react-router-dom';
 import { createStore,applyMiddleware } from 'redux';
 import {Provider } from 'react-redux';
 import getStore from '../store'
@@ -9,8 +9,12 @@ import getStore from '../store'
 const App = () => {
     return (
         <Provider store={getStore()}>
-            <BrowserRouter>
-                {Routes}
+            <BrowserRouter >
+                <div>
+                    {routes.map(route =>(
+                        <Route {...route}/>
+                    ))}
+                </div>
             </BrowserRouter>
         </Provider>
     )

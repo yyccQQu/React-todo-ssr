@@ -30,15 +30,9 @@ class Home extends Component {
 
 }
 
-// const Home = (props) => {
-//     return (
-//         <div>
-//             <Header/>
-//             <div>Home abc~~{props.name}!</div>
-//             <button onClick={() => { alert('click') }}>click</button>
-//         </div>
-//     )
-// }
+Home.loadData = () =>{
+    
+}
 
 const mapStateToProps = state => ({
     name: state.home.name,
