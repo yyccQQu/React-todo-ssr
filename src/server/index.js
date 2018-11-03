@@ -15,7 +15,7 @@ app.use(express.static('public'))//静态文件直接到根目录下public、文
 
 
 app.get('*', function (req, res) {
-    res.send(render(req));
+    render(req,res);
 });
 
 var server = app.listen(3000);

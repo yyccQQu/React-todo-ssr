@@ -6,7 +6,7 @@ import routes from '../Routes';
 import {Provider } from 'react-redux';
 import getStore from '../store'
 
-export const render = (req) => {
+export const render = (req,res) => {
     const store = getStore();
     //如果在这里，我们能够拿到异步数据，并填充到store之中
     //store里面到底填充什么，我们不知道，我们需要结合当前用户请求地址，和路由，去判断
@@ -38,37 +38,39 @@ export const render = (req) => {
 
     //当所有异步操作执行完成之后再执行后面的操作
     Promise.all(promises).then(() =>{
-        console.log(store.getState())
+        // console.log(store.getState())
+        const content = renderToString((
+            <Provider store={store}>
+                <StaticRouter location={req.path} context={{}}>
+                    <div>
+                        {routes.map(route =>(
+                            <Route {...route}/>
+                        ))}
+                    </div>
+                </StaticRouter>
+            </Provider>
+        ));
+        res.send(
+             `
+            <html>
+                <head>
+                    <title>ssr</title>
+                </head>
+                <body>
+                    <div id="root">${content}</div>
+                </body>
+                <script src="./index.js"></script>
+            </html>
+        `
+        );
     })
     
+
+    //服务器渲染阶段需要异步请求数据，让数据填满页面，之后js接管页面，
+    //由于没有连接设置好中间代理服务器，故只能使用客户端js渲染。但是除了接口问题，其他功能已经ok了
+
+
     
-
-    console.log(store.getState())
-
-
-    const content = renderToString((
-        <Provider store={store}>
-            <StaticRouter location={req.path} context={{}}>
-                <div>
-                    {routes.map(route =>(
-                        <Route {...route}/>
-                    ))}
-                </div>
-            </StaticRouter>
-        </Provider>
-        
-    ));
-    return `
-        <html>
-            <head>
-                <title>ssr</title>
-            </head>
-            <body>
-                <div id="root">${content}</div>
-            </body>
-            <script src="./index.js"></script>
-        </html>
-    `;
 }
 
 
